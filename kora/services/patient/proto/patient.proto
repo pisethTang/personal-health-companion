@@ -1,0 +1,43 @@
+syntax = "proto3";  // Use Protocol Buffers version 3 (the modern version).
+
+package patient;    // Namespace for these definitions.
+
+// Tells the Go generator where to put the generated files.
+option go_package = "github.com/kora-health/kora/services/patient/gen/go/patient";
+
+// The service that the Patient Service will implement.
+service PatientService {
+  // One remote procedure call: given a patient ID, return context about them.
+  rpc GetPatientContext (PatientContextRequest) returns (PatientContextResponse);
+  rpc LogCheckIn (CheckinRequest) returns (CheckinResponse);
+}
+
+// The request message: just a patient ID.
+message PatientContextRequest {
+  string patient_id = 1;  // Field type, name, and tag number.
+  repeated string recent_symptoms = 2;
+  repeated string current_medications = 3;
+}
+
+// The response message: the patient's name.
+message PatientContextResponse {
+  string name = 1;
+    repeated string recent_symptoms = 2;
+    repeated string current_medications = 3;
+}
+
+message CheckinRequest {
+  string patient_id = 1;
+  float mood_score = 2;
+  float weight_kg = 3;
+  string notes = 4;
+
+  repeated string symptoms = 5;
+  repeated string medications_taken = 6;
+}
+
+
+message CheckinResponse {
+    string checkin_id = 1;
+    bool success = 2;
+}

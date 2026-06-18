@@ -1,0 +1,6 @@
+1. Data Model
+- What entities exist? (patients, check-ins, symptoms, medications)
+
+- How do they relate?
+- What does the API contract look like? (proto)
+- What does the database schema look like?

@@ -1,0 +1,28 @@
+services:               # The list of containers we want to run.
+  postgres:             # The name we give this container group.
+    image: pgvector/pgvector:pg16  # Which image to download. This one is Postgres 16 with the pgvector extension.
+    container_name: kora-postgres  # The actual running container name.
+    environment:        # Values passed into the container as environment variables.
+      POSTGRES_USER: kora            # Default database username.
+      POSTGRES_PASSWORD: kora_dev_password  # Default database password.
+      POSTGRES_DB: kora_patient     # Default database name created on startup.
+    ports:              # Map a port on your machine to a port inside the container.
+      - "5432:5432"    # localhost:5432 on your machine → port 5432 inside Postgres.
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  neo4j: # 2nd service
+    image: neo4j:5.15-community # neo4j graph database, community edition 
+    container_name: kora-neo4j  
+    environment:
+      NEO4J_AUTH: neo4j/kora_dev_password # sets the username to neo4j and password to kora_dev_password
+    ports:                                 
+      - "7474:7474" # maps Neo4j's web browser to your localhos
+      - "7687:7687" # maps Neo4j's Bolt protocol, which clients use to query the graph
+    volumes:
+      - neo4j_data:/data # persists the graph database files
+      - neo4j_logs:/logs # persists Neo4j logs.
+
+volumes:
+  postgres_data:
+  neo4j_data:
+  neo4j_logs:
